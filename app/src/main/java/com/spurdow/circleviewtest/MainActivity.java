@@ -23,6 +23,8 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
         mSeekBar.setOnSeekBarChangeListener(this);
         mSeekBar.setProgress(DEFAULT_PROGRESS);
         mSeekBar.setMax(1000);
+
+
     }
 
     @Override

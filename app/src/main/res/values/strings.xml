@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CircleViewTest</string>
+    <string name="mapbox_access_token">pk.eyJ1IjoiY2N1cmF0byIsImEiOiJkMGZhMDYxNDE4ODZiN2JkM2RlMTI0NTVhODI5MmY5OCJ9.RxwP837dNa7rFT8IBxnbBQ</string>
 </resources>
