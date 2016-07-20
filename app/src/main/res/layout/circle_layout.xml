@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.spurdow.simplecircleview.SimpleCircleView xmlns:android="http://schemas.android.com/apk/res/android"
+                                               android:id="@+id/circleView"
               android:orientation="vertical"
               xmlns:cv="http://schemas.android.com/apk/lib/com.spurdow.simplecircleview"
               android:layout_width="wrap_content"
-              android:layout_height="wrap_content">
+              android:layout_height="wrap_content"
+              cv:radius="5"
+              cv:fillColor="@color/fill"
+              cv:strokeColor="@color/stroke">
 
-    <com.spurdow.simplecircleview.SimpleCircleView
-        android:id="@+id/circleView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        cv:radius="5"
-        cv:fillColor="@color/fill"
-        cv:strokeColor="@color/stroke"
-        />
 
-</LinearLayout>
+
+</com.spurdow.simplecircleview.SimpleCircleView>

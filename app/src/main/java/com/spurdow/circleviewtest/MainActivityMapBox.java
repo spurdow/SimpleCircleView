@@ -61,9 +61,20 @@ public class MainActivityMapBox extends AppCompatActivity implements SeekBar.OnS
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 //        mSimpleCircleView.setRadius(progress);
-        if(mCircleMarkerView != null){
-            mCircleMarkerView.setRadius(progress);
-            mMap.updateMarker(mCircleMarkerView);
+
+        if(mMap != null) {
+            if(mCircleMarkerView != null){
+                mCircleMarkerView.setRadius(progress);
+                mCircleMarkerView.setPosition(new LatLng(10.308498, 123.885932));
+                mMap.updateMarker(mCircleMarkerView);
+                mMap.getMarkerViewManager().getView(mCircleMarkerView);
+            }
+
+//            CircleMarkerViewOptions options = new CircleMarkerViewOptions();
+//            options.radius(progress);
+//            options.color(R.color.colorAccent);
+//            options.position(new LatLng(10.308498, 123.885932));
+//            mCircleMarkerView = (CircleMarkerView) mMap.addMarker(options);
         }
     }
 
@@ -88,13 +99,12 @@ public class MainActivityMapBox extends AppCompatActivity implements SeekBar.OnS
         mMap = mapboxMap;
         CircleMarkerViewOptions options = new CircleMarkerViewOptions();
         options.radius(25);
-        options.color(Color.parseColor("#C2C2C2"));
+        options.color(Color.parseColor("#FF4081"));
         options.position(new LatLng(10.308498, 123.885932));
-        options.title("Test Circle");
         mCircleMarkerView = (CircleMarkerView) mMap.addMarker(options);
         mMarkerViewManager = mMap.getMarkerViewManager();
 
-        mMarkerViewManager.addMarkerViewAdapter(new CircleMarkerAdapter(this , mapboxMap , mCircleMarkerView));
+        mMarkerViewManager.addMarkerViewAdapter(new CircleMarkerAdapter(this , mapboxMap));
 
 
     }
@@ -104,18 +114,17 @@ public class MainActivityMapBox extends AppCompatActivity implements SeekBar.OnS
         private static final String TAG = CircleMarkerAdapter.class.getSimpleName();
         private LayoutInflater inflater;
         private MapboxMap mapboxMap;
-        private CircleMarkerView mCircleMarkerView;
         /**
          * Create an instance of MarkerViewAdapter.
          *
          * @param context the context associated to a MapView
          */
-        public CircleMarkerAdapter(@NonNull Context context, @NonNull MapboxMap mapboxMap , @NonNull CircleMarkerView mCircleMarkerView) {
+        public CircleMarkerAdapter(@NonNull Context context, @NonNull MapboxMap mapboxMap) {
             super(context);
             this.inflater = LayoutInflater.from(context);
             this.mapboxMap = mapboxMap;
             this.mapboxMap.setOnCameraChangeListener(this);
-            this.mCircleMarkerView = mCircleMarkerView;
+
         }
 
         @Nullable
@@ -131,24 +140,22 @@ public class MainActivityMapBox extends AppCompatActivity implements SeekBar.OnS
                 viewHolder = (ViewHolder) convertView.getTag();
             }
 
-            viewHolder.mSimpleCircleView.setFillColor(Color.parseColor("#C2C2C2"));
+            viewHolder.mSimpleCircleView.setFillColor(marker.getColor());
+            viewHolder.mSimpleCircleView.setRadius(marker.getRadius());
+
 //            viewHolder.mCircleView.setPosition(marker.getPosition());
 //            viewHolder.mCircleView.setMap(mapboxMap);
 
 
-
+            Log.w(TAG , "Updating CircleView " );
 
             return convertView;
         }
 
         @Override
         public void onCameraChange(CameraPosition position) {
-            mapboxMap.getMarkerViewManager().getView(mCircleMarkerView);
-            mCircleMarkerView.setRadius(50);
-            mCircleMarkerView.setColor(Color.parseColor("#C2C2C2"));
-            mapboxMap.updateMarker(mCircleMarkerView);
 
-            Log.w(TAG , "Test");
+            Log.w(TAG , "onCameraChange");
         }
 
         @Override
@@ -156,6 +163,8 @@ public class MainActivityMapBox extends AppCompatActivity implements SeekBar.OnS
             this.mapboxMap.setOnCameraChangeListener(null);
             return super.prepareViewForReuse(marker, convertView);
         }
+
+
 
         private static class ViewHolder{
             SimpleCircleView mSimpleCircleView;

@@ -24,7 +24,7 @@ public class SimpleCircleView extends View {
     /**
      * Attribute from attrs.xml
      */
-    private int radius;
+    private float radius;
     private int fillColor;
     private int strokeColor;
 
@@ -145,11 +145,11 @@ public class SimpleCircleView extends View {
     /**
      * Setter getter for our attributes
      */
-    public int getRadius() {
+    public float getRadius() {
         return radius;
     }
 
-    public void setRadius(int radius) {
+    public void setRadius(float radius) {
         this.radius = radius;
         invalidate();
     }
@@ -160,8 +160,14 @@ public class SimpleCircleView extends View {
 
     public void setFillColor(int fillColor) {
         this.fillColor = fillColor;
-        invalidate();
+        if(circlePaint != null){
+            circlePaint.setColor(fillColor);
+            invalidate();
+        }
+
     }
+
+
 
     public int getStrokeColor() {
         return strokeColor;
@@ -169,6 +175,9 @@ public class SimpleCircleView extends View {
 
     public void setStrokeColor(int strokeColor) {
         this.strokeColor = strokeColor;
-        invalidate();
+        if(circleStrokePaint != null){
+            circleStrokePaint.setColor(strokeColor);
+            invalidate();
+        }
     }
 }
