@@ -25,13 +25,14 @@ import com.spurdow.simplecircleview.SimpleCircleView;
 /**
  * Created by android on 7/20/16.
  */
-public class MainActivityMapBox extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener, MapView.OnMapChangedListener, OnMapReadyCallback {
+public class MainActivityMapBox extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener, MapView.OnMapChangedListener, OnMapReadyCallback, MapboxMap.OnCameraChangeListener {
 
     SeekBar mSeekBar;
     CircleMarkerView mCircleMarkerView;
     MapView mMapView;
     MapboxMap mMap;
     MarkerViewManager mMarkerViewManager;
+    private float current_progress =25;
     static final int DEFAULT_PROGRESS = 25;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,18 +65,20 @@ public class MainActivityMapBox extends AppCompatActivity implements SeekBar.OnS
 
         if(mMap != null) {
             if(mCircleMarkerView != null){
-                mCircleMarkerView.setRadius(progress);
-                mCircleMarkerView.setPosition(new LatLng(10.308498, 123.885932));
-                mMap.updateMarker(mCircleMarkerView);
-                mMap.getMarkerViewManager().getView(mCircleMarkerView);
+//                mCircleMarkerView.setRadius(progress);
+//                mCircleMarkerView.setPosition(new LatLng(10.308498, 123.885932));
+                mMap.removeMarker(mCircleMarkerView);
+                CircleMarkerViewOptions options = new CircleMarkerViewOptions();
+                options.radius(progress);
+                options.color(R.color.colorAccent);
+                options.position(new LatLng(10.308498, 123.885932));
+                mCircleMarkerView = (CircleMarkerView) mMap.addMarker(options);
+
             }
 
-//            CircleMarkerViewOptions options = new CircleMarkerViewOptions();
-//            options.radius(progress);
-//            options.color(R.color.colorAccent);
-//            options.position(new LatLng(10.308498, 123.885932));
-//            mCircleMarkerView = (CircleMarkerView) mMap.addMarker(options);
+
         }
+        current_progress = progress;
     }
 
     @Override
@@ -103,10 +106,28 @@ public class MainActivityMapBox extends AppCompatActivity implements SeekBar.OnS
         options.position(new LatLng(10.308498, 123.885932));
         mCircleMarkerView = (CircleMarkerView) mMap.addMarker(options);
         mMarkerViewManager = mMap.getMarkerViewManager();
-
+        mMap.setOnCameraChangeListener(this);
         mMarkerViewManager.addMarkerViewAdapter(new CircleMarkerAdapter(this , mapboxMap));
 
+    }
 
+    @Override
+    public void onCameraChange(CameraPosition position) {
+        if(mMap != null) {
+            if(mCircleMarkerView != null){
+//                mCircleMarkerView.setRadius(progress);
+//                mCircleMarkerView.setPosition(new LatLng(10.308498, 123.885932));
+                mMap.removeMarker(mCircleMarkerView);
+                CircleMarkerViewOptions options = new CircleMarkerViewOptions();
+                options.radius(current_progress);
+                options.color(R.color.colorAccent);
+                options.position(new LatLng(10.308498, 123.885932));
+                mCircleMarkerView = (CircleMarkerView) mMap.addMarker(options);
+
+            }
+
+
+        }
     }
 
 
